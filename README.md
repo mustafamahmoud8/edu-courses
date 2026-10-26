@@ -1,4 +1,4 @@
-# ITLegend Course Player
+# Edu Courses 
 
 A modern, responsive course player application built with Next.js, React, and TypeScript. Designed to deliver interactive lessons, course materials, student discussions, and quizzes/exams with persistent progress tracking.
 
