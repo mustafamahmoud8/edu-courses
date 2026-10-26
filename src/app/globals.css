@@ -1,0 +1,240 @@
+@import "tailwindcss";
+
+/* ─── Light Theme ──────────────────────────────────────── */
+:root {
+  color-scheme: light;
+  --background: 0 0% 100%;
+  --foreground: 202 25% 10%;
+  --card: 0 0% 100%;
+  --card-foreground: 202 17% 15%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 202 17% 15%;
+  --primary: 167 47% 49%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 196 24% 96%;
+  --secondary-foreground: 202 17% 15%;
+  --muted: 198 12% 95%;
+  --muted-foreground: 204 8% 38%;
+  --accent: 167 47% 49%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 350 84% 64%;
+  --border: 200 13% 90%;
+  --input: 200 13% 90%;
+  --ring: 167 47% 49%;
+  --radius: 0.5rem;
+
+  /* Sidebar */
+  --sidebar-bg: 0 0% 100%;
+  --sidebar-width: 260px;
+}
+
+/* ─── Dark Theme ──────────────────────────────────────── */
+.dark {
+  color-scheme: dark;
+  --background: 224 20% 10%;
+  --foreground: 210 40% 96%;
+  --card: 224 20% 13%;
+  --card-foreground: 210 40% 96%;
+  --popover: 224 20% 13%;
+  --popover-foreground: 210 40% 96%;
+  --primary: 167 47% 49%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 224 20% 16%;
+  --secondary-foreground: 210 40% 96%;
+  --muted: 224 20% 18%;
+  --muted-foreground: 215 20% 60%;
+  --accent: 167 47% 49%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 350 70% 55%;
+  --border: 224 20% 20%;
+  --input: 224 20% 20%;
+  --ring: 167 47% 49%;
+
+  --sidebar-bg: 224 20% 8%;
+}
+
+/* ─── Tailwind Theme ──────────────────────────────────── */
+@theme inline {
+  --font-league-spartan: var(--font-league-spartan);
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+}
+
+/* ─── Base ──────────────────────────────────────────────── */
+* {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.05s ease;
+}
+
+body {
+  font-family: var(--font-league-spartan), sans-serif;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+/* ─── Layout ─────────────────────────────────────────────── */
+@layer components {
+  .wrapper {
+    @apply mx-auto max-w-7xl;
+    width: min(100% - 48px, 1192px);
+  }
+
+  @media (min-width: 768px) {
+    .wrapper {
+      width: min(100% - 84px, 1192px);
+    }
+  }
+
+  /* Sidebar layout */
+  .app-layout {
+    display: flex;
+    min-height: 100dvh;
+  }
+
+  .app-sidebar {
+    width: var(--sidebar-width);
+    flex-shrink: 0;
+    background: hsl(var(--sidebar-bg));
+    border-left: 1px solid hsl(var(--border));
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 40;
+    overflow-y: auto;
+    transition: transform 0.3s ease;
+  }
+
+  .app-main {
+    flex: 1;
+    margin-right: var(--sidebar-width);
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+  }
+
+  @media (max-width: 1024px) {
+    .app-sidebar {
+      transform: translateX(100%);
+    }
+    .app-sidebar.open {
+      transform: translateX(0);
+    }
+    .app-main {
+      margin-right: 0;
+    }
+  }
+
+  /* Course grid */
+  .course-grid {
+    grid-template-columns: minmax(0, 1.9fr) minmax(320px, 1fr);
+    grid-template-areas: "player curriculum" "actions curriculum" "materials curriculum" "comments curriculum";
+  }
+  .course-grid.is-wide {
+    grid-template-areas: "player player" "actions actions" "materials curriculum" "comments curriculum";
+  }
+  @media (max-width: 900px) {
+    .course-grid,
+    .course-grid.is-wide {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas: "player" "actions" "materials" "curriculum" "comments";
+    }
+  }
+
+  /* Cards grid */
+  .courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  /* Loader */
+  .loader {
+    width: 45px;
+    aspect-ratio: 0.75;
+    --c: no-repeat linear-gradient(hsl(var(--primary)) 0 0);
+    background: var(--c) 0% 50%, var(--c) 50% 50%, var(--c) 100% 50%;
+    background-size: 20% 50%;
+    animation: load 1s infinite linear;
+  }
+  @keyframes load {
+    20% { background-position: 0% 0%, 50% 50%, 100% 50%; }
+    40% { background-position: 0% 100%, 50% 0%, 100% 50%; }
+    60% { background-position: 0% 50%, 50% 100%, 100% 0%; }
+    80% { background-position: 0% 50%, 50% 50%, 100% 100%; }
+  }
+
+  /* Skeleton */
+  .skeleton {
+    @apply animate-pulse bg-muted rounded-lg;
+  }
+
+  /* Rating stars */
+  .stars-fill {
+    background: linear-gradient(to left, hsl(var(--muted)) var(--empty), #f59e0b var(--empty));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Badge */
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold;
+  }
+  .badge-primary {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold bg-primary/10 text-primary;
+  }
+  .badge-success {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400;
+  }
+  .badge-warning {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400;
+  }
+  .badge-danger {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400;
+  }
+  .badge-muted {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold bg-muted text-muted-foreground;
+  }
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground));
+}
+
+/* ─── Fullscreen video ──────────────────────────────────── */
+#course-video:fullscreen {
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  aspect-ratio: auto;
+  border-radius: 0;
+  background: #050505;
+}
